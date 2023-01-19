@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\PokedexRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: PokedexRepository::class)]
+#[ApiResource]
 class Pokedex
 {
     #[ORM\Id]
