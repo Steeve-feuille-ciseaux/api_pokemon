@@ -26,7 +26,7 @@ install: ## Install and start the project
 install: .env.local build start vendor yarn_install dump_env_dev mysql assets success
 
 network: ## Create network for project
-	docker network create purina_network
+	docker network create api_pokemon2_network
 
 reset: ## Stop and start a fresh install of the project
 reset: kill install
@@ -66,7 +66,7 @@ cache:
 	-$(SYMFONY) cache:clear --no-warmup
 
 mysql: ## Reset the database and load fixtures
-	@$(EXEC_PHP) php -f .docker/php/wait_db_up.php purina_mysql:3306 15
+	@$(EXEC_PHP) php -f .docker/php/wait_db_up.php api_pokemon2_mysql:3306 15
 	$(SYMFONY) doctrine:database:drop --if-exists --force
 	$(SYMFONY) doctrine:database:create --if-not-exists
 	#$(SYMFONY) doctrine:migrations:migrate --no-interaction --allow-no-migration

@@ -3,7 +3,7 @@ version: '3.7'
 services:
   apache:
     build: .docker/apache
-    container_name: purina_apache
+    container_name: api_pokemon2_apache
     ports:
       - '80'
     volumes:
@@ -15,14 +15,14 @@ services:
 
   mysql:
     image: mysql:latest
-    container_name: purina_mysql
+    container_name: api_pokemon2_mysql
     ports:
       - '3306'
     networks:
       - backend
     environment:
       MYSQL_ROOT_PASSWORD: DIgNauTITiTApHEct
-      MYSQL_DATABASE: purina
+      MYSQL_DATABASE: api_pokemon2
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
     volumes:
@@ -33,7 +33,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: purina_phpmyadmin
+    container_name: api_pokemon2_phpmyadmin
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
@@ -50,7 +50,7 @@ services:
       args:
         USER_ID: ${USER_ID:-0}
         GROUP_ID: ${GROUP_ID:-0}
-    container_name: purina_php
+    container_name: api_pokemon2_php
     volumes:
       - .:/var/www/app:cached
     depends_on:
@@ -58,5 +58,24 @@ services:
     networks:
       - backend
 
+###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-15}-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+
 networks:
   backend:
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  db-data:
+###< doctrine/doctrine-bundle ###
