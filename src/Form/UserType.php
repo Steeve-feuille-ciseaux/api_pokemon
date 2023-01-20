@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserType extends AbstractType
 {
@@ -16,8 +17,12 @@ class UserType extends AbstractType
         $builder
             ->add('email')
             ->add('password', PasswordType::class, [
-                'mapped' => false
-                ])
+                'mapped' => false,
+                'constraints' => [
+                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?+,;()§°{}_:&!@$%^&*-]).{8,}/',
+                    "le mdp doit inclure 1 majuscule, 1 minuscule, 1 caractère spécial en 8 caractères minimum")
+                ],
+            ])
             ->add('Enregistrer', SubmitType::class)
         ;
     }
